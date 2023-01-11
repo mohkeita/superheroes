@@ -5,6 +5,7 @@ import io.mohkeita.superheroes.antiHero.entity.AntiHeroEntity;
 import io.mohkeita.superheroes.antiHero.service.AntiHeroService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @AllArgsConstructor
+@CrossOrigin(allowedHeaders = "Content-type")
 @RestController
 @RequestMapping("api/v1/anti-heroes")
 public class AntiHeroController {
@@ -52,10 +54,15 @@ public class AntiHeroController {
         service.removeAntiHeroById(id);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping
-    public List<AntiHeroDto> getAntiHeroes() {
+    public List<AntiHeroDto> getAntiHeroes(Pageable pageable) {
+        int toSkip = pageable.getPageSize() * pageable.getPageNumber();
+
+
         var antiHeroList = StreamSupport
                 .stream(service.findAllAntiHeroes().spliterator(), false)
+                .skip(toSkip).limit(pageable.getPageSize())
                 .collect(Collectors.toList());
 
         return antiHeroList.stream()
