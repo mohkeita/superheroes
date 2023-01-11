@@ -9,11 +9,10 @@ import java.util.UUID;
 @Getter
 @Setter
 public class AntiHeroDto {
-
     private UUID id;
-    @NotNull(message = "First Name can't be empty")
+    @NotNull(message = "First Name must not be null")
     private String firstname;
-    private String lastname;
+    private String lastName;
     private String house;
     private String knownAs;
 }
