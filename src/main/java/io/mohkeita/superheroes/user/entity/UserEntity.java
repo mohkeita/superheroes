@@ -28,5 +28,5 @@ public class UserEntity {
         this.email = email;
         this.mobileNumber = mobileNumber;
     }
-    
+
 }
