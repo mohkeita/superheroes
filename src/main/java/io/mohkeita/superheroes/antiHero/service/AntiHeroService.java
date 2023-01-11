@@ -2,6 +2,7 @@ package io.mohkeita.superheroes.antiHero.service;
 
 import io.mohkeita.superheroes.antiHero.entity.AntiHeroEntity;
 import io.mohkeita.superheroes.antiHero.repository.AntiHeroRepository;
+import io.mohkeita.superheroes.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,11 @@ public class AntiHeroService {
     }
 
     public AntiHeroEntity findAntiHeroById(UUID id) {
-        return repo.findById(id);
+        return findOrThrow(id);
     }
 
     public void removeAntiHeroById(UUID id) {
+        findOrThrow(id);
         repo.deleteById(id);
     }
 
@@ -29,8 +31,15 @@ public class AntiHeroService {
     }
 
     public void updateAntiHero(UUID id, AntiHeroEntity antiHero) {
+        findOrThrow(id);
         repo.save(antiHero);
     }
 
+    private AntiHeroEntity findOrThrow(final UUID id) {
+        return repo
+                .findById(id)
+                .orElseThrow(
+                        () -> new NotFoundException("Anti-hero by id " + id + " was not found")
+                );
     }
 }
