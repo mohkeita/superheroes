@@ -3,6 +3,7 @@ package io.mohkeita.superheroes.antiHero.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.redis.core.RedisHash;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table
+@RedisHash("AntiHero")
 public class AntiHeroEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "UUID")
