@@ -1,5 +1,6 @@
 package io.mohkeita.superheroes.user.service;
 
+import io.mohkeita.superheroes.exception.BadRequestException;
 import io.mohkeita.superheroes.exception.NotFoundException;
 import io.mohkeita.superheroes.user.data.UserDto;
 import io.mohkeita.superheroes.user.entity.UserEntity;
