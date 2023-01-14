@@ -1,5 +1,7 @@
 package io.mohkeita.superheroes.config;
 
+import io.mohkeita.superheroes.jwt.filters.JwtRequestFilter;
+import io.mohkeita.superheroes.jwt.services.ApplicationUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,14 +12,19 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @AllArgsConstructor
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final ApplicationUserDetailsService userDetailsService;
+    private final JwtRequestFilter jwtFilter;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
+        auth.userDetailsService(userDetailsService);
     }
 
     @Override
@@ -37,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)

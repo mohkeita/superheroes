@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -54,6 +55,7 @@ public class AntiHeroController {
         service.removeAntiHeroById(id);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping
     public List<AntiHeroDto> getAntiHeroes(Pageable pageable) {
